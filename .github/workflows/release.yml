@@ -50,7 +50,7 @@ jobs:
       - name: Download Boost
         run: |
           mkdir boost
-          curl -L -o boost/boost_1_81_0.zip https://www.boost.org/users/download/
+          curl -L -o boost/boost_1_81_0.zip https://archives.boost.io/release/1.86.0/source/boost_1_86_0.7z
       - name: Install Boost
         run: |
           cd boost
