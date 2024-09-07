@@ -50,8 +50,7 @@ jobs:
       - name: Download Boost
         run: |
           mkdir boost
-          curl -L -o boost/boost_1_81_0.zip https://dl.bintray.com/boostorg/release/1.81.0/source/boost_1_81_0.zip
-          # Замените на актуальную версию Boost
+          curl -L -o boost/boost_1_81_0.zip https://www.boost.org/users/download/
       - name: Install Boost
         run: |
           cd boost
