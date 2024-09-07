@@ -48,22 +48,14 @@ jobs:
         with:
           submodules: true
       - name: Download Boost
-        run: |
-          mkdir boost
-          curl -L -o boost/boost_1_81_0.zip https://archives.boost.io/release/1.86.0/source/boost_1_86_0.7z
-      - name: Install Boost
-        run: |
-          cd boost
-          unzip boost_1_81_0.zip
-          cd boost_1_81_0
-          bootstrap.bat -j=4 
-          b2 toolset=msvc address-model=64 variant=release link=static threading=multi runtime-link=static
-          cd ..
-          cd ..
-      - run: cmake . -DPATCH_VERSION=${{ github.run_number }} -DBOOST_ROOT=./boost/boost_1_81_0 
+        uses: actions/download-artifact@v3
+        with:
+          name: boost_1_81_0
+          path: boost
+      - run: cmake . -DPATCH_VERSION=${{ github.run_number }} -DBOOST_ROOT=./boost
       - run: cmake --build .
-      - run: cmake --build . --target test 
-      - run: cmake --build . --target package 
+      - run: cmake --build . --target test
+      - run: cmake --build . --target package
       - name: Create Release (Windows)
         id: create_release_windows
         uses: actions/create-release@v1
@@ -84,3 +76,29 @@ jobs:
           asset_path: ./helloworld-0.0.${{ github.run_number }}-Windows.exe
           asset_name: helloworld-0.0.${{ github.run_number }}-Windows.exe
           asset_content_type: application/x-msdownload
+
+  # Задача для загрузки Boost
+  download_boost:
+    runs-on: ubuntu-latest
+    outputs:
+      boost_path: ${{ steps.download.outputs.boost_path }}
+    steps:
+      - name: Download Boost
+        id: download
+        uses: actions/download-artifact@v3
+        with:
+          name: boost_1_81_0
+          path: boost
+      - name: Set Boost Path
+        run: echo "::set-output name=boost_path::$(pwd)/boost"
+
+  # Задача для публикации артефакта Boost
+  publish_boost:
+    runs-on: ubuntu-latest
+    needs: download_boost
+    steps:
+      - name: Upload Boost
+        uses: actions/upload-artifact@v3
+        with:
+          name: boost_1_81_0
+          path: ${{ from_json(needs.download_boost.outputs.boost_path) }}
