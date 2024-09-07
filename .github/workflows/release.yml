@@ -92,13 +92,3 @@ jobs:
       - name: Set Boost Path
         run: echo "::set-output name=boost_path::$(pwd)/boost"
 
-  # Задача для публикации артефакта Boost
-  publish_boost:
-    runs-on: ubuntu-latest
-    needs: download_boost
-    steps:
-      - name: Upload Boost
-        uses: actions/upload-artifact@v3
-        with:
-          name: boost_1_81_0
-          path: ${{ from_json(needs.download_boost.outputs.boost_path) }}
