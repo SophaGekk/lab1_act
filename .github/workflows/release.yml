@@ -53,7 +53,6 @@ jobs:
           visualstudio-version: 'latest'
           include-build-tools: true
           include-prerequisites: true
-      - run: cmake . -DPATCH_VERSION=${{ github.run_number }} -G "Visual Studio 17 2022" # Выбираете версию Visual Studio 
       - run: cmake --build . --config Release
       - run: cmake --build . --target test --config Release 
       - run: cmake --build . --target package --config Release
