@@ -10,11 +10,12 @@ jobs:
   build_windows:
     runs-on: windows-latest
     permissions: write-all
+    needs: build_scoop 
     steps:
       - uses: actions/checkout@v3
         with:
           submodules: true
-      - name: Install Boost using Scoop
+      - name: Download Scoop Artifact
         uses: actions/download-artifact@v3
         with:
           name: scoop
@@ -27,8 +28,8 @@ jobs:
           include-prerequisites: true
       - name: Set PATH for Scoop
         run: |
-          echo "::add-path::$(pwd)/scoop/bin"
-          echo "::add-path::$(pwd)/scoop/shims"
+             echo "::add-path::$(pwd)/scoop/bin"
+             echo "::add-path::$(pwd)/scoop/shims"
       - name: Install Boost
         run: scoop install boost
       - run: cmake . -DPATCH_VERSION=${{ github.run_number }}
