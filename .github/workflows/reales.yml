@@ -15,6 +15,21 @@ jobs:
         with:
           submodules: true
       - name: Install Boost using Scoop
+        uses: actions/download-artifact@v3
+        with:
+          name: scoop
+          path: scoop
+      - name: Install Visual Studio Build Tools
+        uses: microsoft/setup-msbuild@v2
+        with:
+          visualstudio-version: 'latest'
+          include-build-tools: true
+          include-prerequisites: true
+      - name: Set PATH for Scoop
+        run: |
+          echo "::add-path::$(pwd)/scoop/bin"
+          echo "::add-path::$(pwd)/scoop/shims"
+      - name: Install Boost
         run: scoop install boost
       - run: cmake . -DPATCH_VERSION=${{ github.run_number }}
       - run: cmake --build . --config Release
