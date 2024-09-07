@@ -10,7 +10,7 @@ jobs:
   build_windows:
     runs-on: windows-latest
     permissions: write-all
-    needs: build_scoop 
+    # needs: build_scoop 
     steps:
       - uses: actions/checkout@v3
         with:
