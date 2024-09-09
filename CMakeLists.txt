@@ -12,8 +12,8 @@ find_package(Boost COMPONENTS unit_test_framework REQUIRED)
 #   - REQUIRED: Если Boost не найден, CMake прекратит работу с ошибкой.
 
 # Указание пути к Boost
-set(Boost_DIR "C:/Users/Sopha/Downloads/boost_1_86_0")
-find_package(Boost COMPONENTS unit_test_framework REQUIRED PATHS ${Boost_DIR})
+# set(Boost_DIR "C:/Users/Sopha/Downloads/boost_1_86_0")
+# find_package(Boost COMPONENTS unit_test_framework REQUIRED PATHS ${Boost_DIR})
 
 configure_file(version.h.in version.h) # Создает файл version.h из шаблона version.h.in, заменяя в нем специальные переменные, например, имя проекта и версию.
 
@@ -68,17 +68,17 @@ if (MSVC) # Устанавливает флаги компиляции в зав
     )
 else ()
     target_compile_options(helloworld_cli PRIVATE
-        -Wall -Wextra -pedantic -Werror
+        -Wall -Wextra
     )
     target_compile_options(helloworld PRIVATE
-        -Wall -Wextra -pedantic -Werror
+        -Wall -Wextra
     )
     target_compile_options(test_version PRIVATE
-        -Wall -Wextra -pedantic -Werror
+        -Wall -Wextra
     )
 endif()
 
-set(CPack_GENERATOR DEB)
+set(CPack_GENERATOR productbuild)  # Изменен генератор для macOS 
 include(CPack)
 
 install(TARGETS helloworld_cli RUNTIME DESTINATION bin) # Устанавливает исполняемые файлы в директорию bin после успешной сборки.
