@@ -6,54 +6,37 @@ on:
       - main
       - feature/github_actions
 
-jobs:  
-  build_windows:
-    runs-on: windows-latest
+jobs:
+  build_macos:
+    runs-on: macos-latest
     permissions: write-all
     steps:
       - uses: actions/checkout@v3
         with:
           submodules: true
-      # - name: Download Scoop Artifact
-      #   uses: actions/download-artifact@v3
-      #   with:
-      #     name: scoop
-      #     path: scoop
-      - name: Install Visual Studio Build Tools
-        uses: microsoft/setup-msbuild@v2
-        with:
-          visualstudio-version: 'latest'
-          include-build-tools: true
-          include-prerequisites: true
-      - name: Set PATH for Scoop
-        run: |
-             echo "::add-path::$(pwd)/scoop/bin"
-             echo "::add-path::$(pwd)/scoop/shims"
-      - name: Install Boost
-        run: scoop install boost
+      - run: brew install cmake boost
       - run: cmake . -DPATCH_VERSION=${{ github.run_number }}
-      - run: cmake --build . --config Release
-      - name: Run Tests (Windows)
-        run: |
-          cmake --build . --target test --config Release
-      - run: cmake --build . --target package --config Release
-      - name: Create Release (Windows)
-        id: create_release_windows
+      - run: cmake --build .
+      - run: cmake --build . --target test
+      - run: cmake --build . --target package
+      - name: Create Release (macOS)
+        id: create_release_macos
         uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tag_name: ${{ github.run_number }}
-          release_name: Release ${{ github.run_number }} (Windows)
+          release_name: Release ${{ github.run_number }} (macOS)
           draft: false
           prerelease: false
-      - name: Upload Release Asset (Windows)
-        id: upload-release-asset-windows
+      - name: Upload Release Asset (macOS)
+        id: upload-release-asset-macos
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          upload_url: ${{ steps.create_release_windows.outputs.upload_url }}
-          asset_path: ./helloworld-0.0.${{ github.run_number }}-Windows.exe
-          asset_name: helloworld-0.0.${{ github.run_number }}-Windows.exe
-          asset_content_type: application/x-msdownload
+          upload_url: ${{ steps.create_release_macos.outputs.upload_url }}
+          asset_path: ./helloworld-0.0.${{ github.run_number }}-macOS.dmg
+          asset_name: helloworld-0.0.${{ github.run_number }}-macOS.dmg
+          asset_content_type: application/x-apple-diskimage
+
