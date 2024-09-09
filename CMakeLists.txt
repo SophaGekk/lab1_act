@@ -57,6 +57,7 @@ target_link_libraries(test_version
 
 
 if (MSVC) # Устанавливает флаги компиляции в зависимости от компилятора
+set(CPACK_GENERATOR DEB) # Настраивает CPack для создания пакетов DEB (Linux).
     target_compile_options(helloworld_cli PRIVATE
         /W4
     )
@@ -67,6 +68,7 @@ if (MSVC) # Устанавливает флаги компиляции в зав
         /W4
     )
 else ()
+    set(CPack_GENERATOR DMG)
     target_compile_options(helloworld_cli PRIVATE
         -Wall -Wextra
     )
@@ -78,8 +80,6 @@ else ()
     )
 endif()
 
-set(CPack_GENERATOR productbuild)  # Изменен генератор для macOS 
-include(CPack)
 
 install(TARGETS helloworld_cli RUNTIME DESTINATION bin) # Устанавливает исполняемые файлы в директорию bin после успешной сборки.
 
