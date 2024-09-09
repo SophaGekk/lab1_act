@@ -78,7 +78,8 @@ else ()
     )
 endif()
 
-
+set(CPack_GENERATOR DEB)
+include(CPack)
 
 install(TARGETS helloworld_cli RUNTIME DESTINATION bin) # Устанавливает исполняемые файлы в директорию bin после успешной сборки.
 
