@@ -15,7 +15,7 @@ jobs:
         with:
           submodules: true
       - run: brew install cmake boost
-      - run: brew install dmg
+      - run: brew install create-dmg
       - run: cmake . -DPATCH_VERSION=${{ github.run_number }} -DCMAKE_INSTALL_PREFIX=install
       - run: cmake --build .
       - run: cmake --build . --target test
