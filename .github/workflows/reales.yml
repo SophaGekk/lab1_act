@@ -16,7 +16,7 @@ jobs:
           submodules: true
       - run: brew install cmake boost
       - run: brew install create-dmg
-      - run: cmake . -DPATCH_VERSION=${{ github.run_number }} -DCMAKE_INSTALL_PREFIX=install
+      - run: cmake . -DPATCH_VERSION=${{ github.run_number }} -DCMAKE_INSTALL_PREFIX=install -DCMAKE_GENERATOR_TOOLSET=DMG
       - run: cmake --build .
       - run: cmake --build . --target test
       - run: cmake --build . --target package # Добавлен шаг для создания DMG-пакета
