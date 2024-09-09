@@ -83,7 +83,7 @@ include(CPack)
 
 install(TARGETS helloworld_cli RUNTIME DESTINATION bin) # Устанавливает исполняемые файлы в директорию bin после успешной сборки.
 
-set(CPACK_GENERATOR DEB) # Настраивает CPack для создания пакетов DEB (Linux).
+# set(CPACK_GENERATOR DEB) # Настраивает CPack для создания пакетов DEB (Linux).
 
 set(CPACK_PACKAGE_VERSION_MAJOR "${PROJECT_VERSION_MAJOR}")
 set(CPACK_PACKAGE_VERSION_MINOR "${PROJECT_VERSION_MINOR}")
