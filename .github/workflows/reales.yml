@@ -18,7 +18,7 @@ jobs:
       - run: cmake . -DPATCH_VERSION=${{ github.run_number }} -DCMAKE_INSTALL_PREFIX=install
       - run: cmake --build .
       - run: cmake --build . --target test 
-      - run: cmake --build . --target package - эта строка уже присутствует в workflow  
+      - run: cmake --build . --target package 
       - name: Create Release (macOS)
         id: create_release_macos
         uses: actions/create-release@v1
