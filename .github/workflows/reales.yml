@@ -17,6 +17,7 @@ jobs:
       - run: brew install cmake boost
       - run: brew install cmake cpack-deb 
       - run: cmake . -DPATCH_VERSION=${{ github.run_number }}
+      - run: cmake . -DCMAKE_INSTALL_PREFIX=install
       - run: cmake --build .
       - run: cmake --build . --target test
 
