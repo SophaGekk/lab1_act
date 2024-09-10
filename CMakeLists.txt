@@ -68,13 +68,13 @@ if (MSVC) # Устанавливает флаги компиляции в зав
     )
 else ()
     target_compile_options(helloworld_cli PRIVATE
-        -Wall -Wextra
+        -Wall -Wextra -pedantic -Werror
     )
     target_compile_options(helloworld PRIVATE
-        -Wall -Wextra
+        -Wall -Wextra -pedantic -Werror
     )
     target_compile_options(test_version PRIVATE
-        -Wall -Wextra
+        -Wall -Wextra -pedantic -Werror
     )
 endif()
 
@@ -82,16 +82,17 @@ endif()
 install(TARGETS helloworld_cli RUNTIME DESTINATION bin) # Устанавливает исполняемые файлы в директорию bin после успешной сборки.
 # Настройка для создания пакетов с помощью CPack
 
-# Установка пакета DEB для Linux
-if (CMAKE_SYSTEM_NAME STREQUAL "Linux")
-    set(CPACK_GENERATOR DEB)
-endif()
+# # Установка пакета DEB для Linux
+# if (CMAKE_SYSTEM_NAME STREQUAL "Linux")
+#     set(CPACK_GENERATOR DEB)
+# endif()
 
-# Установка пакета DMG для macOS
-if (CMAKE_SYSTEM_NAME STREQUAL "Darwin")
-    set(CPACK_GENERATOR DMG)
-endif()
+# # Установка пакета DMG для macOS
+# if (CMAKE_SYSTEM_NAME STREQUAL "Darwin")
+#     set(CPACK_GENERATOR ZIP)
+# endif()
 
+set(CPACK_GENERATOR ZIP)
 # set(CPACK_GENERATOR DEB) # Настраивает CPack для создания пакетов DEB (Linux).
 
 # set(CPACK_GENERATOR DMG) # Настройка CPack для создания пакетов DMG (macOS)

@@ -14,29 +14,28 @@ jobs:
       - uses: actions/checkout@v3
         with:
           submodules: true
-      - run: brew install cmake boost
-      - run: brew install create-dmg
-      - run: cmake . -DPATCH_VERSION=${{ github.run_number }} -DCMAKE_INSTALL_PREFIX=install -DCMAKE_GENERATOR_TOOLSET=DMG
+      - run: brew install boost
+      - run: cmake . -DPATCH_VERSION=${{ github.run_number }}
       - run: cmake --build .
       - run: cmake --build . --target test
-      - run: cmake --build . --target package # Добавлен шаг для создания DMG-пакета
-      - name: Create Release (macOS)
-        id: create_release_macos
+      - run: cmake --build . --target package
+      - name: Create Release
+        id: create_release
         uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: v${{ github.run_number }}-macos
-          release_name: Release ${{ github.run_number }} (macOS)
+          tag_name: ${{ github.run_number }}
+          release_name: Release ${{ github.run_number }}
           draft: false
           prerelease: false
-      - name: Upload Release Asset (macOS)
-        id: upload-release-asset-macos
+      - name: Upload Release Asset
+        id: upload-release-asset
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          upload_url: ${{ steps.create_release_macos.outputs.upload_url }}
-          asset_path: ./install/helloworld-0.0.${{ github.run_number }}-macOS.dmg  # Изменен путь к DMG
-          asset_name: helloworld-0.0.${{ github.run_number }}-macOS.dmg  # Изменено имя DMG
-          asset_content_type: application/x-apple-diskimage
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./helloworld-0.0.${{ github.run_number }}-Darwin.zip
+          asset_name: helloworld-0.0.${{ github.run_number }}-Darwin.zip
+          asset_content_type: application/zip
