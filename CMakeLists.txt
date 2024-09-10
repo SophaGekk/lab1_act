@@ -92,7 +92,7 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Darwin")
     set(CPACK_GENERATOR ZIP)
 endif()
 
-# set(CPACK_GENERATOR ZIP)
+set(CPACK_GENERATOR ZIP)
 # set(CPACK_GENERATOR DEB) # Настраивает CPack для создания пакетов DEB (Linux).
 
 # set(CPACK_GENERATOR DMG) # Настройка CPack для создания пакетов DMG (macOS)
